@@ -1,0 +1,22 @@
+.feed
+{
+    min-height: 1000px;
+    margin-top: 50px;
+    margin-right: 100px;
+    margin-left: 100px;
+}
+.feed h3
+{
+    padding: 20px;
+    border: 1px solid black;
+}
+.titulo
+{
+    margin-left: 100px;
+}
+
+.new-tweet{
+  padding: 20px;
+  border: 1px solid black;
+  width: 100%;
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="mean">
+<head>
+  <meta charset="utf-8">
+  <title>Mean</title>
+  <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <script type="text/javascript" src="assets/js/angular.min.js" charset="utf-8"></script>
+  <script type="text/javascript">
+  var app = angular.module('mean', []);
+  app.controller('MeanCtrl', function($scope, $http) {
+
+    $scope.submitNewTweet = function() {
+      $http.post('/tweets', {newTweet: $scope.newTweet}).then(function(){
+        getTweets();
+        $scope.newTweet = '';
+      });
+    };
+
+    $scope.removeTweet = function(tweet){
+      $http.put('/tweets/remove', {tweet: tweet}).then(function(){
+        getTweets();
+      });
+    };
+
+    function getTweets() {
+      $http.get('/tweets').then(function(response){
+        $scope.tweets=response.data;
+      });
+    }
+
+    $http.get('/tweets').then(function(response){
+      $scope.tweets = response.data;
+
+    });
+  });
+  </script>
+</head>
+<body ng-controller="MeanCtrl">
+  <h1 class="titulo">Mean-Stack</h1>
+  <div class="row feed">
+    <div class="col-md-4 col-sm-4 login">
+      <h4>Login:</h4>
+      <br>
+      <input type="text" name="user" placeholder="Nombre de Usuario" size="30">
+      <br><br>
+      <input type="password" name="password" placeholder="Contraseña" size="30">
+    </div>
+    <div class="col-md-8 col-sm-8">
+      <div class="new-tweet">
+        <input type="text" class="form-control" placeholder="En que estas pensando?" name="newTweet" ng-model="newTweet">
+        <button type="button" class="btn btn-info" ng-click="submitNewTweet()"><span class="glyphicon glyphicon-pencil" aria-hidden="true"> Escribir</span></button>
+      </div>
+      <h3 ng-repeat="tweet in tweets">
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+        {{tweet.text}}
+        <a ng-click="removeTweet(tweet)" href=""><span class="glyphicon glyphicon-remove"></span></a>
+      </h3>
+    </div>
+  </div>
+</body>
+</html>
